@@ -18,31 +18,46 @@ def factorial(num):
             num -= 1
         return fact 
 
-def procesar_rango(rango_str):
+def procesar_rango_flexible(rango_str):
     try:
-        # Separamos los números usando el guion '-' como divisor
         partes = rango_str.split('-')
-        desde = int(partes[0])
-        hasta = int(partes[1])
         
-        # Validamos que el rango sea lógico 
-        if desde > hasta:
-            desde, hasta = hasta, desde 
+        # -hasta (ejemplo: -10) 
+        if partes[0] == "" and partes[1] != "":
+            desde = 1
+            hasta = int(partes[1])
+        
+        # desde- (ejemplo: 55-) 
+        elif partes[0] != "" and partes[1] == "":
+            desde = int(partes[0])
+            hasta = 60
             
-        print(f"\nCalculando factoriales desde {desde} hasta {hasta}:")
+        # "desde-hasta" (ejemplo: 4-8) 
+        elif partes[0] != "" and partes[1] != "":
+            desde = int(partes[0])
+            hasta = int(partes[1])
+        
+        else:
+            print("Formato no reconocido.")
+            return
+
+        # Validación desde hasta
+        if desde > hasta:
+            print(f"Error: El inicio ({desde}) no puede ser mayor al fin ({hasta}).")
+            return
+
+        print(f"\nProcesando rango: {desde} a {hasta}")
         for i in range(desde, hasta + 1):
             print(f"  {i}! = {factorial(i)}")
             
     except (ValueError, IndexError):
-        print("Error: El formato debe ser NÚMERO-NÚMERO (ejemplo: 4-8)")
+        print("Error: Use el formato 'n-m', '-m' o 'n-'.")
 
-
-# .Intento por argumento de terminal
+# Entrada de datos
 if len(sys.argv) > 1:
     rango_input = sys.argv[1]
 else:
-    # .Si se omite, se solicita manualmente
-    print("No se detectó un rango como argumento.")
-    rango_input = input("Ingrese el rango (ej. 4-8): ")
+    print("No se detectó argumento de rango.")
+    rango_input = input("Ingrese el rango (ej. -10 o 55-): ")
 
-procesar_rango(rango_input)
+procesar_rango_flexible(rango_input)
