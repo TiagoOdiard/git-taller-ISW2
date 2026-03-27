@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # Python program to display all the prime numbers within an interval
+# Agregando Comentarios al Archivo primes.py previamente eliminado
 
 lower = 1
 upper = 500
